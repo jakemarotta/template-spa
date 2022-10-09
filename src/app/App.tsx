@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import { Counter } from '@/app/components/counter/Counter';
 import styles from './App.module.scss';
 
-const App: React.FC = () => {
+export const App: React.FC = () => {
   return (
     <div className={styles.App}>
       <header className={styles.App_header}>
@@ -54,5 +54,3 @@ const App: React.FC = () => {
     </div>
   );
 };
-
-export default App;

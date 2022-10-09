@@ -22,7 +22,7 @@ module.exports = function (_env, argv) {
       open: true,
     },
     resolve: {
-      extensions: ['*', '.js', '.jsx', '.ts', 'tsx'],
+      extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
       plugins: [
         new TsconfigPathsPlugin({
           extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -32,28 +32,27 @@ module.exports = function (_env, argv) {
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
+          test: /\.(js|ts)x?$/,
           exclude: /node_modules/,
-          use: ['ts-loader'],
-        },
-        {
-          test: /\.jsx?$/,
-          exclude: /node_modules/,
-          use: ['babel-loader'],
+          use: [
+            'babel-loader'
+          ],
         },
         {
           test: /\.module\.s[ac]ss$/,
           use: [
-            isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
             {
-              loader: 'css-loader',
+              loader: isDevelopment ? require.resolve('style-loader', { paths: [__dirname] }) : MiniCssExtractPlugin.loader,
+            },
+            {
+              loader: require.resolve('css-loader', { paths: [__dirname] }),
               options: {
                 modules: true,
                 sourceMap: isDevelopment
               },
             },
             {
-              loader: 'sass-loader',
+              loader: require.resolve('sass-loader', { paths: [__dirname] }),
               options: {
                 sourceMap: isDevelopment
               },
@@ -64,8 +63,12 @@ module.exports = function (_env, argv) {
           test: /\.s?[ac]ss$/,
           exclude: /\.module.s[ac]ss$/,
           use: [
-            isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-            'css-loader',
+            {
+              loader: isDevelopment ? require.resolve('style-loader', { paths: [__dirname] }) : MiniCssExtractPlugin.loader,
+            },
+            {
+              loader: require.resolve('css-loader', { paths: [__dirname] }),
+            },
             {
               loader: 'sass-loader',
               options: {

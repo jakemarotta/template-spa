@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = function (_env, argv) {
   const isProduction = argv.mode === 'production'
@@ -84,12 +86,17 @@ module.exports = function (_env, argv) {
       ],
     },
     plugins: [
-      new HtmlWebpackPlugin({
-        template: path.join(__dirname,'/src/index.html'),
-      }),
       new MiniCssExtractPlugin({
         filename: isDevelopment ? '[name].css' : '[name].[fullhash].css',
         chunkFilename: isDevelopment ? '[id].css' : '[id].[fullhash].css',
+      }),
+      new CleanWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        template: path.join(__dirname,'/src/index.html'),
+      }),
+      new ESLintPlugin({
+        extensions: ['.tsx', '.ts', '.jsx', '.js'],
+        exclude: 'node_modules',
       }),
     ],
   };
